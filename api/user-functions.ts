@@ -1,14 +1,14 @@
 import axios from 'axios';
 import urljoin from 'url-join';
 import { User } from '../models/interfaces/user';
+import { Users } from '../models/interfaces/users';
 
 export class UserFunctions {
-    constructor(private netlifyIdentityUrl: string) {
-    }
+    constructor(private netlifyIdentityUrl: string) { }
 
-    async getAllUsers(token: string): Promise<User[]> {
+    async getAllUsers(token: string): Promise<Users> {
         var getAllUsersUrl = urljoin(this.netlifyIdentityUrl, '/admin/users');
-        var results = await axios.get<User[]>(getAllUsersUrl, { headers: { Authorization: `Bearer ${token}` }});
+        var results = await axios.get<Users>(getAllUsersUrl, { headers: { Authorization: `Bearer ${token}` }});
 
         return results.data;
     }
