@@ -1,6 +1,6 @@
 {
   "name": "netlify-identity-admin-api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "API to interact with Netlify Identity's (GoTrue) admin API in Netlify Functions",
   "main": "index.js",
   "dependencies": {
