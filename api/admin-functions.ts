@@ -16,7 +16,14 @@ export class AdminFunctions {
     }
 
     async getUserById(userId: string, token: string): Promise<User> {
+        console.log(this.netlifyIdentityUrl);
+        console.log(this.usersUrl);
+        console.log(userId);
+
         var getUserByIdUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, userId);
+
+        console.log(getUserByIdUrl);
+
         var result = await axios.get<User>(getUserByIdUrl, { headers: { Authorization: `Bearer ${token}` }});
 
         return result.data;
