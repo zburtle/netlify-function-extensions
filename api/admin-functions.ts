@@ -31,4 +31,14 @@ export class AdminFunctions {
         var deleteUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, userId);
         await axios.delete(deleteUserUrl, { headers: { Authorization: `Bearer ${token}` }});
     }
+
+    async isUserAdministrator(userId:string, token: string, adminRoleName: string = 'Administrator'): Promise<boolean> {
+        return await this.isUserInRole(userId, token, adminRoleName);
+    }
+
+    async isUserInRole(userId: string, token: string, roleName: string): Promise<boolean> {
+        var user = await this.getUserById(userId, token);
+
+        return user.app_metadata.roles.some((x: string) => x == roleName);
+    }
 }
