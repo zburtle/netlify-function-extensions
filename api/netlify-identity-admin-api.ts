@@ -1,9 +1,9 @@
-import axios from 'axios';
-import urljoin from 'url-join';
-import { User } from '../models/interfaces/user';
-import { Users } from '../models/interfaces/users';
+import axios from "axios";
+import urljoin from "url-join";
+import { User } from "../models/interfaces/user";
+import { Users } from "../models/interfaces/users";
 
-export class UserFunctions {
+export class NetlifyIdentityAdmin {
     constructor(private netlifyIdentityUrl: string) { }
 
     async getAllUsers(token: string): Promise<Users> {
