@@ -41,8 +41,8 @@ export class AdminFunctions {
         return result.data;
     }
 
-    async updateUser(user: User, userId:string, token: string): Promise<void> {
-        var updateUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, userId);
+    async updateUser(user: User, token: string): Promise<void> {
+        var updateUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, user.id);
         await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
     }
 
