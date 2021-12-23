@@ -1,7 +1,7 @@
 {
-  "name": "netlify-identity-admin-api",
+  "name": "gotrue-node",
   "version": "1.0.8",
-  "description": "API to interact with Netlify Identity's (GoTrue) admin API in Netlify Functions",
+  "description": "API to interact with Netlify Identity's (GoTrue) API in Netlify Functions",
   "main": "index.js",
   "dependencies": {
     "axios": "^0.24.0",
@@ -14,12 +14,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zburtle/netlify-identity-admin-api.git"
+    "url": "git+https://github.com/zburtle/gotrue-node.git"
   },
   "author": "Zach Burtle",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zburtle/netlify-identity-admin-api/issues"
+    "url": "https://github.com/zburtle/gotrue-node/issues"
   },
-  "homepage": "https://github.com/zburtle/netlify-identity-admin-api#readme"
+  "homepage": "https://github.com/zburtle/gotrue-node#readme"
 }
