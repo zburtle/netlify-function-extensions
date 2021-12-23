@@ -9,7 +9,7 @@ export class AdminFunctions {
     constructor(private netlifyIdentityUrl: string) { }
 
     async getAllUsers(token: string): Promise<Users> {
-        var getAllUsersUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl);
+        var getAllUsersUrl = `${urljoin(this.netlifyIdentityUrl, this.usersUrl)}?per_page=${100000}`;
         var results = await axios.get<Users>(getAllUsersUrl, { headers: { Authorization: `Bearer ${token}` }});
 
         return results.data;
@@ -18,6 +18,25 @@ export class AdminFunctions {
     async getUserById(userId: string, token: string): Promise<User> {
         var getUserByIdUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, userId);
         var result = await axios.get<User>(getUserByIdUrl, { headers: { Authorization: `Bearer ${token}` }});
+
+        return result.data;
+    }
+
+    async getUserByEmail(email: string, token: string): Promise<User | null> {
+        var allUsers = await this.getAllUsers(token);
+        var users = allUsers.users.filter(x => x.email == email);
+
+        if (users && users.length > 0) {
+            return users[0];
+        }
+        else {
+            return null;
+        }
+    }
+
+    async createUser(user: User, token: string): Promise<User> {
+        var updateUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl);
+        var result = await axios.post(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
 
         return result.data;
     }
