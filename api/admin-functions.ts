@@ -1,12 +1,17 @@
 import axios from "axios";
 import urljoin from "url-join";
+import { AppMetaData } from "../models/interfaces/app-metadata";
 import { User } from "../models/interfaces/user";
 import { Users } from "../models/interfaces/users";
+import { UserFunctions } from "./user-functions";
 
 export class AdminFunctions {
     private usersUrl: string = '/admin/users';
+    private userFunctions: UserFunctions;
 
-    constructor(private netlifyIdentityUrl: string) { }
+    constructor(private netlifyIdentityUrl: string) { 
+        this.userFunctions = new UserFunctions(netlifyIdentityUrl);
+    }
 
     async getAllUsers(token: string): Promise<Users> {
         var getAllUsersUrl = `${urljoin(this.netlifyIdentityUrl, this.usersUrl)}?per_page=${100000}`;
@@ -43,7 +48,6 @@ export class AdminFunctions {
 
     async updateUser(user: User, token: string): Promise<void> {
         var updateUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, user.id);
-        console.log(updateUserUrl);
         await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
     }
 
@@ -60,5 +64,14 @@ export class AdminFunctions {
         var user = await this.getUserById(userId, token);
 
         return user.app_metadata.roles.some((x: string) => x == roleName);
+    }
+
+    async registerUserWithAppMetadata(email: string, password: string, appMetaData: AppMetaData, token: string): Promise<User> {
+        var newUser = await this.userFunctions.registerUser(email, password);
+        newUser.app_metadata = appMetaData;
+
+        await this.updateUser(newUser, token);
+
+        return newUser;
     }
 }

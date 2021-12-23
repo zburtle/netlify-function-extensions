@@ -1,7 +1,6 @@
 import axios from "axios";
 import urljoin from "url-join";
 import { User } from "../models/interfaces/user";
-import { UserData } from "../models/interfaces/user-data";
 
 export class UserFunctions {
     constructor(private netlifyIdentityUrl: string) { }
