@@ -1,1 +1,1 @@
-netlify-identity-admin-api
+gotrue-node
