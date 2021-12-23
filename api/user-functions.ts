@@ -6,12 +6,11 @@ import { UserData } from "../models/interfaces/user-data";
 export class UserFunctions {
     constructor(private netlifyIdentityUrl: string) { }
 
-    async registerUser(email: string, password: string, userData: UserData): Promise<User> {
+    async registerUser(email: string, password: string): Promise<User> {
         var registerUserUrl = urljoin(this.netlifyIdentityUrl, 'signup');
         var result = await axios.post(registerUserUrl, {
             email: email,
-            password: password,
-            userData: userData
+            password: password
         });
 
         return result.data;
