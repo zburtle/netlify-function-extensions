@@ -43,6 +43,7 @@ export class AdminFunctions {
 
     async updateUser(user: User, token: string): Promise<void> {
         var updateUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, user.id);
+        console.log(updateUserUrl);
         await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
     }
 
