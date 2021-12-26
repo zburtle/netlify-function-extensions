@@ -9,19 +9,19 @@ export class AdminFunctions {
     private usersUrl: string = '/admin/users';
     private userFunctions: UserFunctions;
 
-    constructor(private netlifyIdentityUrl: string) { 
-        this.userFunctions = new UserFunctions(netlifyIdentityUrl);
+    constructor(private identity: any) {
+        this.userFunctions = new UserFunctions(identity);
     }
 
     async getAllUsers(token: string): Promise<Users> {
-        var getAllUsersUrl = `${urljoin(this.netlifyIdentityUrl, this.usersUrl)}?per_page=${100000}`;
+        var getAllUsersUrl = `${urljoin(this.identity.url, this.usersUrl)}?per_page=${100000}`;
         var results = await axios.get<Users>(getAllUsersUrl, { headers: { Authorization: `Bearer ${token}` }});
 
         return results.data;
     }
 
     async getUserById(userId: string, token: string): Promise<User> {
-        var getUserByIdUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, userId);
+        var getUserByIdUrl = urljoin(this.identity.url, this.usersUrl, userId);
         var result = await axios.get<User>(getUserByIdUrl, { headers: { Authorization: `Bearer ${token}` }});
 
         return result.data;
@@ -40,19 +40,19 @@ export class AdminFunctions {
     }
 
     async createUser(user: User, token: string): Promise<User> {
-        var updateUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl);
+        var updateUserUrl = urljoin(this.identity.url, this.usersUrl);
         var result = await axios.post(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
 
         return result.data;
     }
 
     async updateUser(user: User, token: string): Promise<void> {
-        var updateUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, user.id);
+        var updateUserUrl = urljoin(this.identity.url, this.usersUrl, user.id);
         await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
     }
 
     async deleteUser(userId:string, token: string): Promise<void> {
-        var deleteUserUrl = urljoin(this.netlifyIdentityUrl, this.usersUrl, userId);
+        var deleteUserUrl = urljoin(this.identity.url, this.usersUrl, userId);
         await axios.delete(deleteUserUrl, { headers: { Authorization: `Bearer ${token}` }});
     }
 
