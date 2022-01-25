@@ -1,6 +1,6 @@
 {
   "name": "gotrue-node",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "API to interact with Netlify Identity's (GoTrue) API in Netlify Functions",
   "main": "index.js",
   "dependencies": {
