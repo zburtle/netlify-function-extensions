@@ -2,6 +2,7 @@ import axios from "axios";
 import urljoin from "url-join";
 import { AppMetaData } from "../models/interfaces/app-metadata";
 import { User } from "../models/interfaces/user";
+import { UserMetaData } from "../models/interfaces/user-metadata";
 import { Users } from "../models/interfaces/users";
 import { UserFunctions } from "./user-functions";
 
@@ -64,6 +65,16 @@ export class AdminFunctions {
         var user = await this.getUserById(userId, token);
 
         return user.app_metadata.roles.some((x: string) => x == roleName);
+    }
+
+    async registerUserWithMetadata(email: string, password: string, appMetaData: AppMetaData, userMetaData: UserMetaData, token: string): Promise<User> {
+        var newUser = await this.userFunctions.registerUser(email, password);
+        newUser.app_metadata = appMetaData;
+        newUser.user_metadata = userMetaData;
+        
+        await this.updateUser(newUser, token);
+
+        return newUser;
     }
 
     async registerUserWithAppMetadata(email: string, password: string, appMetaData: AppMetaData, token: string): Promise<User> {
