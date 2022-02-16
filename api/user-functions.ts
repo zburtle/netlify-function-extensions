@@ -14,4 +14,14 @@ export class UserFunctions {
 
         return result.data;
     }
+
+    async inviteUser(email: string, password: string): Promise<User> {
+        var inviteUserUrl = urljoin(this.identity.url, 'invite');
+        var result = await axios.post(inviteUserUrl, {
+            email: email,
+            password: password
+        });
+
+        return result.data;
+    }
 }

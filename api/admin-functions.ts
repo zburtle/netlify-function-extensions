@@ -85,4 +85,23 @@ export class AdminFunctions {
 
         return newUser;
     }
+
+    async inviteUserWithMetadata(email: string, password: string, appMetaData: AppMetaData, userMetaData: UserMetaData, token: string): Promise<User> {
+        var newUser = await this.userFunctions.inviteUser(email, password);
+        newUser.app_metadata = appMetaData;
+        newUser.user_metadata = userMetaData;
+        
+        await this.updateUser(newUser, token);
+
+        return newUser;
+    }
+
+    async inviteUserWithAppMetadata(email: string, password: string, appMetaData: AppMetaData, token: string): Promise<User> {
+        var newUser = await this.userFunctions.inviteUser(email, password);
+        newUser.app_metadata = appMetaData;
+
+        await this.updateUser(newUser, token);
+
+        return newUser;
+    }
 }
