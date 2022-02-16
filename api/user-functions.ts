@@ -15,10 +15,14 @@ export class UserFunctions {
         return result.data;
     }
 
-    async inviteUser(email: string): Promise<User> {
+    async inviteUser(email: string, token: string): Promise<User> {
         var inviteUserUrl = urljoin(this.identity.url, 'invite');
         var result = await axios.post(inviteUserUrl, {
             email: email
+        }, { 
+            headers: { 
+                Authorization: `Bearer ${token}` 
+            }
         });
 
         return result.data;
