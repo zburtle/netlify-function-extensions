@@ -6,6 +6,7 @@ export interface User {
     aud: string;
     role: string;
     email: string;
+    password: string;
     confirmation_sent_at: Date;
     app_metadata: AppMetaData,
     user_metadata: UserMetaData,
