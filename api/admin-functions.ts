@@ -47,7 +47,9 @@ export class AdminFunctions {
     }
 
     async updateUser(user: User, token: string): Promise<void> {
-        var updateUserUrl = `${this.identity.url}/${this.usersUrl}/${user.id}`;
+        var userId = (await this.getUserByEmail(user.email, token))?.id;
+        var updateUserUrl = `${this.identity.url}/${this.usersUrl}/${userId}`;
+        
         await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
     }
 
