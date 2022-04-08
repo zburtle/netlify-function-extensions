@@ -49,7 +49,7 @@ export class AdminFunctions {
     async updateUser(user: User, token: string): Promise<void> {
         var userId = (await this.getUserByEmail(user.email, token))?.id;
         var updateUserUrl = `${this.identity.url}/${this.usersUrl}/${userId}`;
-        
+
         await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
     }
 
@@ -66,6 +66,12 @@ export class AdminFunctions {
         var user = await this.getUserById(userId, token);
 
         return user.app_metadata.roles.some((x: string) => x == roleName);
+    }
+
+    async isUserInAnyRole(userId: string, token: string, roleNames: string[]): Promise<boolean> {
+        var user = await this.getUserById(userId, token);
+
+        return user.app_metadata.roles.some((x: string) => roleNames.some((y: string) => x == y));
     }
 
     async registerUserWithMetadata(email: string, password: string, appMetaData: AppMetaData, userMetaData: UserMetaData, token: string): Promise<User> {
