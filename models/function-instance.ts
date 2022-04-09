@@ -2,6 +2,7 @@ import { Context } from "@netlify/functions/dist/function/context";
 import { Event } from "@netlify/functions/dist/function/event";
 import { AdminFunctions } from "../api/admin-functions";
 import { UserFunctions } from "../api/user-functions";
+import { User } from "./interfaces/user";
 
 export class FunctionInstance {
     public Admin: AdminFunctions;
@@ -10,5 +11,13 @@ export class FunctionInstance {
     constructor(private event: Event, private context: Context) {
         this.Admin = new AdminFunctions(context.clientContext?.identity);
         this.User = new UserFunctions(context.clientContext?.identity);
+    }
+
+    get callingUser(): User {
+        return this.context.clientContext?.user;
+    }
+
+    get adminToken(): string {
+        return this.context.clientContext?.identity.token;
     }
 }

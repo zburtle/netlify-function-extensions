@@ -14,21 +14,21 @@ export class UserFunctions {
         return result.data;
     }
 
-    async inviteUser(email: string, token: string): Promise<User> {
+    async inviteUser(email: string): Promise<User> {
         var inviteUserUrl = `${this.identity.url}/invite`;
         var result = await axios.post(inviteUserUrl, {
             email: email
         }, { 
             headers: { 
-                Authorization: `Bearer ${token}` 
+                Authorization: `Bearer ${this.identity.token}` 
             }
         });
 
         return result.data;
     }
 
-    async updateUser(user: User, token: string): Promise<void> {
+    async updateUser(user: User): Promise<void> {
         var updateUserUrl = `${this.identity.url}/user`;
-        await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${token}` }});
+        await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${this.identity.token}` }});
     }
 }

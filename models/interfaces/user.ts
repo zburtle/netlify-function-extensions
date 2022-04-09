@@ -3,6 +3,7 @@ import { UserMetaData } from "./user-metadata";
 
 export interface User {
     id: string;
+    sub: string;
     aud: string;
     role: string;
     email: string;
