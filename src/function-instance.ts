@@ -5,12 +5,12 @@ import { User } from "./models/interfaces/user";
 import { UserFunctions } from "./user-functions";
 
 export class FunctionInstance {
-    public Admin: AdminFunctions;
-    public User: UserFunctions;
+    public admin: AdminFunctions;
+    public user: UserFunctions;
 
     constructor(private event: Event, private context: Context) {
-        this.Admin = new AdminFunctions(context.clientContext?.identity);
-        this.User = new UserFunctions(context.clientContext?.identity);
+        this.admin = new AdminFunctions(context.clientContext?.identity);
+        this.user = new UserFunctions(context.clientContext?.identity);
     }
 
     get callingUser(): User {
