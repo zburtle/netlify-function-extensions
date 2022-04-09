@@ -1,8 +1,8 @@
 import { Context } from "@netlify/functions/dist/function/context";
 import { Event } from "@netlify/functions/dist/function/event";
-import { AdminFunctions } from "../api/admin-functions";
-import { UserFunctions } from "../api/user-functions";
-import { User } from "./interfaces/user";
+import { AdminFunctions } from "./admin-functions";
+import { User } from "./models/interfaces/user";
+import { UserFunctions } from "./user-functions";
 
 export class FunctionInstance {
     public Admin: AdminFunctions;

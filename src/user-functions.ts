@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User } from "../models/interfaces/user";
+import { User } from "./models/interfaces/user";
 
 export class UserFunctions {
     constructor(private identity: any) { }

@@ -1,8 +1,8 @@
 import axios from "axios";
-import { AppMetaData } from "../models/interfaces/app-metadata";
-import { User } from "../models/interfaces/user";
-import { UserMetaData } from "../models/interfaces/user-metadata";
-import { Users } from "../models/interfaces/users";
+import { AppMetaData } from "./models/interfaces/app-metadata";
+import { User } from "./models/interfaces/user";
+import { UserMetaData } from "./models/interfaces/user-metadata";
+import { Users } from "./models/interfaces/users";
 import { UserFunctions } from "./user-functions";
 
 export class AdminFunctions {
@@ -29,7 +29,7 @@ export class AdminFunctions {
 
     async getUserByEmail(email: string): Promise<User | null> {
         var allUsers = await this.getAllUsers();
-        var users = allUsers.users.filter(x => x.email == email);
+        var users = allUsers.users.filter((x: User) => x.email == email);
 
         if (users && users.length > 0) {
             return users[0];
