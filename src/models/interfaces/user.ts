@@ -1,7 +1,7 @@
 import { AppMetaData } from "./app-metadata";
 import { UserMetaData } from "./user-metadata";
 
-export interface User {
+export interface User<T = AppMetaData, U = UserMetaData> {
     id: string;
     sub: string;
     aud: string;
@@ -9,8 +9,8 @@ export interface User {
     email: string;
     password: string;
     confirmation_sent_at: Date;
-    app_metadata: AppMetaData,
-    user_metadata: UserMetaData,
+    app_metadata: T,
+    user_metadata: U,
     created_at: Date;
     updated_at: Date;
 }

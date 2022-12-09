@@ -1,6 +1,6 @@
 import { User } from "./user";
 
-export interface Users {
+export interface Users<T extends User> {
     audience: string;
-    users: User[];
+    users: T[];
 }
