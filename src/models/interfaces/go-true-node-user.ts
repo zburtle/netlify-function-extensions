@@ -11,6 +11,7 @@ export class GoTrueNodeUser<T = AppMetaData, U = UserMetaData> extends User {
     email!: string;
     id!: string;
     role!: string;
+    sub!: string;
     token!: Token;
     updated_at!: string;
     url!: string;
