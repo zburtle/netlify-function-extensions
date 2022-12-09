@@ -1,7 +1,7 @@
 import { Context } from "@netlify/functions/dist/function/context";
 import { Event } from "@netlify/functions/dist/function/event";
 import { AdminFunctions } from "./admin-functions";
-import { User } from "./models/interfaces/user";
+import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
 import { UserFunctions } from "./user-functions";
 
 export class FunctionInstance {
@@ -13,7 +13,7 @@ export class FunctionInstance {
         this.user = new UserFunctions(context.clientContext?.identity);
     }
 
-    get callingUser(): User {
+    get callingUser(): GoTrueNodeUser {
         return this.context.clientContext?.user;
     }
 

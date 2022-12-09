@@ -1,10 +1,10 @@
 import axios from "axios";
-import { User } from "./models/interfaces/user";
+import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
 
 export class UserFunctions {
     constructor(private identity: any) { }
 
-    async registerUser<T extends User>(email: string, password: string): Promise<T> {
+    async registerUser<T extends GoTrueNodeUser>(email: string, password: string): Promise<T> {
         var registerUserUrl = `${this.identity.url}/signup`;
         var result = await axios.post(registerUserUrl, {
             email: email,
@@ -14,7 +14,7 @@ export class UserFunctions {
         return result.data;
     }
 
-    async inviteUser<T extends User>(email: string): Promise<T> {
+    async inviteUser<T extends GoTrueNodeUser>(email: string): Promise<T> {
         var inviteUserUrl = `${this.identity.url}/invite`;
         var result = await axios.post(inviteUserUrl, {
             email: email
@@ -27,7 +27,7 @@ export class UserFunctions {
         return result.data;
     }
 
-    async updateUser<T extends User>(user: T): Promise<void> {
+    async updateUser<T extends GoTrueNodeUser>(user: T): Promise<void> {
         var updateUserUrl = `${this.identity.url}/user`;
         await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${this.identity.token}` }});
     }
