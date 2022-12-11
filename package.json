@@ -1,7 +1,7 @@
 {
-  "name": "gotrue-node",
+  "name": "netlify-node-helper",
   "version": "2.2.0",
-  "description": "API to interact with Netlify Identity's (GoTrue) API in Netlify Functions",
+  "description": "API to interact with Netlify Functions API",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "dependencies": {

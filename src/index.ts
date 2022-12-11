@@ -1,6 +1,6 @@
-export { FunctionInstance } from './function-instance';
-export { AdminFunctions } from './admin-functions';
-export { UserFunctions } from './user-functions';
+export { NetlifyHelper } from './netlify-helper';
+export { AdminIdentityFunctions as AdminFunctions } from './admin-identity-functions';
+export { UserIdentityFunctions as UserFunctions } from './user-identity-functions';
 export { GoTrueNodeUser } from './models/interfaces/go-true-node-user';
 export { AppMetaData } from './models/interfaces/app-metadata';
 export { UserMetaData } from './models/interfaces/user-metadata';

@@ -1,16 +1,22 @@
+import { Context } from "@netlify/functions/dist/function/context";
+import { Event } from "@netlify/functions/dist/function/event";
 import axios from "axios";
 import { AppMetaData } from "./models/interfaces/app-metadata";
 import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
 import { UserMetaData } from "./models/interfaces/user-metadata";
 import { Users } from "./models/interfaces/users";
-import { UserFunctions } from "./user-functions";
+import { UserIdentityFunctions } from "./user-identity-functions";
 
-export class AdminFunctions {
+export class AdminIdentityFunctions {
     private usersUrl: string = 'admin/users';
-    private userFunctions: UserFunctions;
+    private userFunctions: UserIdentityFunctions;
 
-    constructor(private identity: any) {
-        this.userFunctions = new UserFunctions(identity);
+    constructor(private event: Event, private context: Context) {
+        this.userFunctions = new UserIdentityFunctions(event, context);
+    }
+
+    get identity(): any {
+        return this.context.clientContext?.identity;
     }
 
     async getAllUsers<T extends GoTrueNodeUser>(): Promise<Users<T>> {
@@ -58,22 +64,6 @@ export class AdminFunctions {
         await axios.delete(deleteUserUrl, { headers: { Authorization: `Bearer ${this.identity.token}` }});
     }
 
-    async isUserAdministrator(userId:string, adminRoleName: string = 'Administrator'): Promise<boolean> {
-        return await this.isUserInRole(userId, adminRoleName);
-    }
-
-    async isUserInRole(userId: string, roleName: string): Promise<boolean> {
-        var user = await this.getUserById(userId);
-
-        return user.app_metadata.roles.some((x: string) => x == roleName);
-    }
-
-    async isUserInAnyRole(userId: string, roleNames: string[]): Promise<boolean> {
-        var user = await this.getUserById(userId);
-
-        return user.app_metadata.roles.some((x: string) => roleNames.some((y: string) => x == y));
-    }
-
     async registerUserWithMetadata<T extends GoTrueNodeUser<U, V>, U extends AppMetaData, V extends UserMetaData>(email: string, password: string, appMetaData: U, userMetaData: V): Promise<T> {
         var newUser = await this.userFunctions.registerUser<T>(email, password);
         newUser.app_metadata = appMetaData;
@@ -110,5 +100,21 @@ export class AdminFunctions {
         await this.updateUser<T>(newUser);
 
         return newUser;
+    }
+
+    async isUserIdAdministrator(userId:string): Promise<boolean> {
+        return await this.isUserIdInRole(userId, 'Adminsitrator');
+    }
+
+    async isUserIdInRole(userId: string, roleName: string): Promise<boolean> {
+        var user = await this.getUserById(userId);
+
+        return await this.userFunctions.isUserInRole(user, roleName);
+    }
+
+    async isUserIdInAnyRole(userId: string, roleNames: string[]): Promise<boolean> {
+        var user = await this.getUserById(userId);
+
+        return await this.userFunctions.isUserInAnyRole(user, roleNames);
     }
 }
