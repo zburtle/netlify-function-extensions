@@ -43,7 +43,7 @@ export class UserIdentityFunctions {
     }
 
     async isUserAdministrator(user:GoTrueNodeUser): Promise<boolean> {
-        return await this.isUserInRole(user, 'Adminsitrator');
+        return await this.isUserInRole(user, 'Administrator');
     }
 
     async isCallingUserInRole(roleName: string): Promise<boolean> {
