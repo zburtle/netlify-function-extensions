@@ -10,6 +10,10 @@ export class UserIdentityFunctions {
         return this.context.clientContext?.identity;
     }
 
+    get callingUser(): GoTrueNodeUser {
+        return this.context.clientContext?.user;
+    }
+
     async registerUser<T extends GoTrueNodeUser>(email: string, password: string): Promise<T> {
         var registerUserUrl = `${this.identity.url}/signup`;
         var result = await axios.post(registerUserUrl, {
@@ -42,8 +46,16 @@ export class UserIdentityFunctions {
         return await this.isUserInRole(user, 'Adminsitrator');
     }
 
+    async isCallingUserInRole(roleName: string): Promise<boolean> {
+        return this.callingUser.app_metadata.roles.some((x: string) => x == roleName);
+    }
+
     async isUserInRole(user: GoTrueNodeUser, roleName: string): Promise<boolean> {
         return user.app_metadata.roles.some((x: string) => x == roleName);
+    }
+
+    async isCallingUserInAnyRole(roleNames: string[]): Promise<boolean> {
+        return this.callingUser.app_metadata.roles.some((x: string) => roleNames.some((y: string) => x == y));
     }
 
     async isUserInAnyRole(user: GoTrueNodeUser, roleNames: string[]): Promise<boolean> {
