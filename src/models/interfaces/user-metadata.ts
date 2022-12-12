@@ -1,3 +1,3 @@
-export interface UserMetaData {
+export class UserMetaData {
     
 }
