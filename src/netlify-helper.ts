@@ -1,7 +1,9 @@
 import { Context } from "@netlify/functions/dist/function/context";
 import { Event } from "@netlify/functions/dist/function/event";
+import { StatusCodes } from "http-status-codes";
 import { AdminIdentityFunctions } from "./admin-identity-functions";
 import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
+import { NetlifyResult } from "./netlify-result";
 import { UserIdentityFunctions } from "./user-identity-functions";
 
 export class NetlifyHelper {
@@ -59,5 +61,43 @@ export class NetlifyHelper {
 
     async isUserInAnyRole(user: GoTrueNodeUser, roleNames: string[]): Promise<boolean> {
         return await this.userIdentityFunctions.isUserInAnyRole(user, roleNames);
+    }
+
+    async executeAsync<T>(action: string, functionToExecute: () => Promise<NetlifyResult<T>>): Promise<NetlifyResult<T>> {
+        try {
+            if (action == this.event.httpMethod) {                
+                return await functionToExecute();
+            }
+            else {
+                return new NetlifyResult<T>(StatusCodes.METHOD_NOT_ALLOWED);
+            }
+        }
+        catch (error) {
+            return new NetlifyResult<T>(StatusCodes.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    async executeAsyncWithRoleCheck<T>(action: string, roleNames: string[], functionToExecute: () => Promise<NetlifyResult<T>>): Promise<NetlifyResult<T>> {
+        try {
+            if (action == this.event.httpMethod) {
+                if (this.callingUser) {
+                    if (await this.isCallingUserInAnyRole(roleNames)) {               
+                        return await functionToExecute();
+                    }
+                    else {
+                        return new NetlifyResult<T>(StatusCodes.FORBIDDEN);
+                    }
+                }
+                else {
+                    return new NetlifyResult<T>(StatusCodes.UNAUTHORIZED);
+                }
+            }
+            else {
+                return new NetlifyResult<T>(StatusCodes.METHOD_NOT_ALLOWED);
+            }
+        }
+        catch (error) {
+            return new NetlifyResult<T>(StatusCodes.INTERNAL_SERVER_ERROR);
+        }
     }
 }
