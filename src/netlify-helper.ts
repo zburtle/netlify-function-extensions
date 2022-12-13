@@ -3,7 +3,7 @@ import { Event } from "@netlify/functions/dist/function/event";
 import { StatusCodes } from "http-status-codes";
 import { AdminIdentityFunctions } from "./admin-identity-functions";
 import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
-import { NetlifyResult } from "./netlify-result";
+import { NetlifyResult } from "./models/interfaces/netlify-result";
 import { UserIdentityFunctions } from "./user-identity-functions";
 
 export class NetlifyHelper {
