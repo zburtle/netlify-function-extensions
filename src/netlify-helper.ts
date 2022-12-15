@@ -10,9 +10,9 @@ export class NetlifyHelper {
     public adminIdentityFunctions: AdminIdentityFunctions;
     private userIdentityFunctions: UserIdentityFunctions;
 
-    constructor(private event: Event, private context: Context) {
-        this.adminIdentityFunctions = new AdminIdentityFunctions(event, context);
+    constructor(private event: Event, private context: Context, private identityUrlOverride: string | null = null, private tokenOverride: string | null = null) {
         this.userIdentityFunctions = new UserIdentityFunctions(event, context);
+        this.adminIdentityFunctions = new AdminIdentityFunctions(this.identityUrl, this.adminToken, this.userIdentityFunctions);
     }
 
     get callingUser(): GoTrueNodeUser {
@@ -20,11 +20,15 @@ export class NetlifyHelper {
     }
 
     get adminToken(): string {
-        return this.context.clientContext?.identity.token;
+        return this.tokenOverride ?? this.context.clientContext?.identity.token;
     }
 
     get identity(): any {
         return this.context.clientContext?.identity;
+    }
+
+    get identityUrl(): string {
+        return this.identityUrlOverride ?? this.context.clientContext?.identity;
     }
 
     getBodyObject<T>(): T {

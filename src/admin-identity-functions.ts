@@ -9,26 +9,20 @@ import { UserIdentityFunctions } from "./user-identity-functions";
 
 export class AdminIdentityFunctions {
     private usersUrl: string = 'admin/users';
-    private userFunctions: UserIdentityFunctions;
 
-    constructor(private event: Event, private context: Context) {
-        this.userFunctions = new UserIdentityFunctions(event, context);
-    }
-
-    get identity(): any {
-        return this.context.clientContext?.identity;
+    constructor(private identityUrl: string, private token: string, private userFunctions: UserIdentityFunctions) {
     }
 
     async getAllUsers<T extends GoTrueNodeUser>(): Promise<Users<T>> {
-        var getAllUsersUrl = `${this.identity.url}/${this.usersUrl}?per_page=${100000}`;
-        var results = await axios.get<Users<T>>(getAllUsersUrl, { headers: { Authorization: `Bearer ${this.identity.token}` }});
+        var getAllUsersUrl = `${this.identityUrl}/${this.usersUrl}?per_page=${100000}`;
+        var results = await axios.get<Users<T>>(getAllUsersUrl, { headers: { Authorization: `Bearer ${this.token}` }});
 
         return results.data;
     }
 
     async getUserById<T extends GoTrueNodeUser>(userId: string): Promise<T> {
-        var getUserByIdUrl = `${this.identity.url}/${this.usersUrl}/${userId}`;
-        var result = await axios.get<T>(getUserByIdUrl, { headers: { Authorization: `Bearer ${this.identity.token}` }});
+        var getUserByIdUrl = `${this.identityUrl}/${this.usersUrl}/${userId}`;
+        var result = await axios.get<T>(getUserByIdUrl, { headers: { Authorization: `Bearer ${this.token}` }});
 
         return result.data;
     }
@@ -46,22 +40,22 @@ export class AdminIdentityFunctions {
     }
 
     async createUser<T extends GoTrueNodeUser>(user: T): Promise<T> {
-        var updateUserUrl = `${this.identity.url}/${this.usersUrl}`;
-        var result = await axios.post(updateUserUrl, user, { headers: { Authorization: `Bearer ${this.identity.token}` }});
+        var updateUserUrl = `${this.identityUrl}/${this.usersUrl}`;
+        var result = await axios.post(updateUserUrl, user, { headers: { Authorization: `Bearer ${this.token}` }});
 
         return result.data;
     }
 
     async updateUser<T extends GoTrueNodeUser>(user: T): Promise<void> {
         var userId = (await this.getUserByEmail<T>(user.email))?.id;
-        var updateUserUrl = `${this.identity.url}/${this.usersUrl}/${userId}`;
+        var updateUserUrl = `${this.identityUrl}/${this.usersUrl}/${userId}`;
 
-        await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${this.identity.token}` }});
+        await axios.put(updateUserUrl, user, { headers: { Authorization: `Bearer ${this.token}` }});
     }
 
     async deleteUser(userId:string): Promise<void> {
-        var deleteUserUrl = `${this.identity.url}/${this.usersUrl}/${userId}`;
-        await axios.delete(deleteUserUrl, { headers: { Authorization: `Bearer ${this.identity.token}` }});
+        var deleteUserUrl = `${this.identityUrl}/${this.usersUrl}/${userId}`;
+        await axios.delete(deleteUserUrl, { headers: { Authorization: `Bearer ${this.token}` }});
     }
 
     async registerUserWithMetadata<T extends GoTrueNodeUser<U, V>, U extends AppMetaData, V extends UserMetaData>(email: string, password: string, appMetaData: U, userMetaData: V): Promise<T> {
