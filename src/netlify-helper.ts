@@ -28,7 +28,7 @@ export class NetlifyHelper {
     }
 
     get identityUrl(): string {
-        return this.identityUrlOverride ?? this.context.clientContext?.identity;
+        return this.identityUrlOverride ?? this.context.clientContext?.identity.url;
     }
 
     getBodyObject<T>(): T {
