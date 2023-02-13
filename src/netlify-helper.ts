@@ -5,6 +5,7 @@ import { AdminIdentityFunctions } from "./admin-identity-functions";
 import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
 import { NetlifyResult } from "./models/interfaces/netlify-result";
 import { UserIdentityFunctions } from "./user-identity-functions";
+import { env } from 'process';
 
 export class NetlifyHelper {
     public adminIdentityFunctions: AdminIdentityFunctions;
@@ -67,7 +68,7 @@ export class NetlifyHelper {
         return await this.userIdentityFunctions.isUserInAnyRole(user, roleNames);
     }
 
-    async executeAsync<T>(action: string, functionToExecute: () => Promise<NetlifyResult<T>>): Promise<NetlifyResult<T>> {
+    async executeAsync<T>(action: string, functionToExecute: () => Promise<NetlifyResult<T>>, errorCallback: (error: any) => Promise<NetlifyResult<T>>): Promise<NetlifyResult<T>> {
         try {
             if (action == this.event.httpMethod) {                
                 return await functionToExecute();
@@ -76,12 +77,12 @@ export class NetlifyHelper {
                 return new NetlifyResult<T>(StatusCodes.METHOD_NOT_ALLOWED);
             }
         }
-        catch (error) {
-            return new NetlifyResult<T>(StatusCodes.INTERNAL_SERVER_ERROR);
+        catch (error: any) {
+            return errorCallback(error);
         }
     }
 
-    async executeAsyncWithRoleCheck<T>(action: string, roleNames: string[], functionToExecute: () => Promise<NetlifyResult<T>>): Promise<NetlifyResult<T>> {
+    async executeAsyncWithRoleCheck<T>(action: string, roleNames: string[], functionToExecute: () => Promise<NetlifyResult<T>>, errorCallback: (error: any) => Promise<NetlifyResult<T>>): Promise<NetlifyResult<T>> {
         try {
             if (action == this.event.httpMethod) {
                 if (this.callingUser) {
@@ -101,7 +102,7 @@ export class NetlifyHelper {
             }
         }
         catch (error) {
-            return new NetlifyResult<T>(StatusCodes.INTERNAL_SERVER_ERROR);
+            return errorCallback(error);
         }
     }
 }
