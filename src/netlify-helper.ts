@@ -78,7 +78,7 @@ export class NetlifyHelper {
             }
         }
         catch (error: any) {
-            return errorCallback(error);
+            return await errorCallback(error);
         }
     }
 
@@ -102,7 +102,7 @@ export class NetlifyHelper {
             }
         }
         catch (error) {
-            return errorCallback(error);
+            return await errorCallback(error);
         }
     }
 }
