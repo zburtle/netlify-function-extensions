@@ -2,12 +2,11 @@ import { Context } from "@netlify/functions/dist/function/context";
 import { Event } from "@netlify/functions/dist/function/event";
 import { StatusCodes } from "http-status-codes";
 import { AdminIdentityFunctions } from "./admin-identity-functions";
-import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
+import { NetlifyIdentityUser } from "./models/interfaces/netlify-identity-user";
 import { NetlifyResult } from "./models/interfaces/netlify-result";
 import { UserIdentityFunctions } from "./user-identity-functions";
-import { env } from 'process';
 
-export class NetlifyHelper {
+export class NetlifyFunctionExtensions {
     public adminIdentityFunctions: AdminIdentityFunctions;
     private userIdentityFunctions: UserIdentityFunctions;
 
@@ -16,7 +15,7 @@ export class NetlifyHelper {
         this.adminIdentityFunctions = new AdminIdentityFunctions(this.identityUrl, this.adminToken, this.userIdentityFunctions);
     }
 
-    get callingUser(): GoTrueNodeUser {
+    get callingUser(): NetlifyIdentityUser {
         return this.context.clientContext?.user;
     }
 
@@ -36,19 +35,19 @@ export class NetlifyHelper {
         return JSON.parse(this.event.body ?? '') as T;
     }
 
-    async registerUser<T extends GoTrueNodeUser>(email: string, password: string): Promise<T> {
+    async registerUser<T extends NetlifyIdentityUser>(email: string, password: string): Promise<T> {
         return await this.userIdentityFunctions.registerUser(email, password);
     }
 
-    async inviteUser<T extends GoTrueNodeUser>(email: string): Promise<T> {
+    async inviteUser<T extends NetlifyIdentityUser>(email: string): Promise<T> {
         return await this.userIdentityFunctions.inviteUser(email);
     }
 
-    async updateUser<T extends GoTrueNodeUser>(user: T): Promise<void> {
+    async updateUser<T extends NetlifyIdentityUser>(user: T): Promise<void> {
         return await this.userIdentityFunctions.updateUser(user);
     }
 
-    async isUserAdministrator(user: GoTrueNodeUser): Promise<boolean> {
+    async isUserAdministrator(user: NetlifyIdentityUser): Promise<boolean> {
         return await this.userIdentityFunctions.isUserAdministrator(user);
     }
 
@@ -56,7 +55,7 @@ export class NetlifyHelper {
         return await this.userIdentityFunctions.isCallingUserInRole(roleName);
     }
 
-    async isUserInRole(user: GoTrueNodeUser, roleName: string): Promise<boolean> {
+    async isUserInRole(user: NetlifyIdentityUser, roleName: string): Promise<boolean> {
         return await this.userIdentityFunctions.isUserInRole(user, roleName);
     }
 
@@ -64,7 +63,7 @@ export class NetlifyHelper {
         return this.userIdentityFunctions.isCallingUserInAnyRole(roleNames);
     }
 
-    async isUserInAnyRole(user: GoTrueNodeUser, roleNames: string[]): Promise<boolean> {
+    async isUserInAnyRole(user: NetlifyIdentityUser, roleNames: string[]): Promise<boolean> {
         return await this.userIdentityFunctions.isUserInAnyRole(user, roleNames);
     }
 

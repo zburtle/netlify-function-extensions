@@ -2,7 +2,7 @@ import { Context } from "@netlify/functions/dist/function/context";
 import { Event } from "@netlify/functions/dist/function/event";
 import axios from "axios";
 import { AppMetadata } from "./models/interfaces/app-metadata";
-import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
+import { NetlifyIdentityUser } from "./models/interfaces/netlify-identity-user";
 import { UserMetadata } from "./models/interfaces/user-metadata";
 import { Users } from "./models/interfaces/users";
 import { UserIdentityFunctions } from "./user-identity-functions";
@@ -13,21 +13,21 @@ export class AdminIdentityFunctions {
     constructor(private identityUrl: string, private token: string, private userFunctions: UserIdentityFunctions) {
     }
 
-    async getAllUsers<T extends GoTrueNodeUser>(): Promise<Users<T>> {
+    async getAllUsers<T extends NetlifyIdentityUser>(): Promise<Users<T>> {
         var getAllUsersUrl = `${this.identityUrl}/${this.usersUrl}?per_page=${100000}`;
         var results = await axios.get<Users<T>>(getAllUsersUrl, { headers: { Authorization: `Bearer ${this.token}` }});
 
         return results.data;
     }
 
-    async getUserById<T extends GoTrueNodeUser>(userId: string): Promise<T> {
+    async getUserById<T extends NetlifyIdentityUser>(userId: string): Promise<T> {
         var getUserByIdUrl = `${this.identityUrl}/${this.usersUrl}/${userId}`;
         var result = await axios.get<T>(getUserByIdUrl, { headers: { Authorization: `Bearer ${this.token}` }});
 
         return result.data;
     }
 
-    async getUserByEmail<T extends GoTrueNodeUser>(email: string): Promise<T | null> {
+    async getUserByEmail<T extends NetlifyIdentityUser>(email: string): Promise<T | null> {
         var allUsers = await this.getAllUsers<T>();
         var users = allUsers.users.filter((x: T) => x.email == email);
 
@@ -39,14 +39,14 @@ export class AdminIdentityFunctions {
         }
     }
 
-    async createUser<T extends GoTrueNodeUser>(user: T): Promise<T> {
+    async createUser<T extends NetlifyIdentityUser>(user: T): Promise<T> {
         var updateUserUrl = `${this.identityUrl}/${this.usersUrl}`;
         var result = await axios.post(updateUserUrl, user, { headers: { Authorization: `Bearer ${this.token}` }});
 
         return result.data;
     }
 
-    async updateUser<T extends GoTrueNodeUser>(user: T): Promise<void> {
+    async updateUser<T extends NetlifyIdentityUser>(user: T): Promise<void> {
         var userId = (await this.getUserByEmail<T>(user.email))?.id;
         var updateUserUrl = `${this.identityUrl}/${this.usersUrl}/${userId}`;
 
@@ -58,7 +58,7 @@ export class AdminIdentityFunctions {
         await axios.delete(deleteUserUrl, { headers: { Authorization: `Bearer ${this.token}` }});
     }
 
-    async registerUserWithMetadata<T extends GoTrueNodeUser<U, V>, U extends AppMetadata, V extends UserMetadata>(email: string, password: string, appMetaData: U, userMetaData: V): Promise<T> {
+    async registerUserWithMetadata<T extends NetlifyIdentityUser<U, V>, U extends AppMetadata, V extends UserMetadata>(email: string, password: string, appMetaData: U, userMetaData: V): Promise<T> {
         var newUser = await this.userFunctions.registerUser<T>(email, password);
         newUser.app_metadata = appMetaData;
         newUser.user_metadata = userMetaData;
@@ -68,7 +68,7 @@ export class AdminIdentityFunctions {
         return newUser;
     }
 
-    async registerUserWithAppMetadata<T extends GoTrueNodeUser<U>, U extends AppMetadata>(email: string, password: string, appMetaData: U): Promise<T> {
+    async registerUserWithAppMetadata<T extends NetlifyIdentityUser<U>, U extends AppMetadata>(email: string, password: string, appMetaData: U): Promise<T> {
         var newUser = await this.userFunctions.registerUser<T>(email, password);
         newUser.app_metadata = appMetaData;
 
@@ -77,7 +77,7 @@ export class AdminIdentityFunctions {
         return newUser;
     }
 
-    async inviteUserWithMetadata<T extends GoTrueNodeUser<U, V>, U extends AppMetadata, V extends UserMetadata>(email: string, appMetaData: U, userMetaData: V): Promise<T> {
+    async inviteUserWithMetadata<T extends NetlifyIdentityUser<U, V>, U extends AppMetadata, V extends UserMetadata>(email: string, appMetaData: U, userMetaData: V): Promise<T> {
         var newUser = await this.userFunctions.inviteUser<T>(email);
         newUser.app_metadata = appMetaData;
         newUser.user_metadata = userMetaData;
@@ -87,7 +87,7 @@ export class AdminIdentityFunctions {
         return newUser;
     }
 
-    async inviteUserWithAppMetadata<T extends GoTrueNodeUser<U>, U extends AppMetadata>(email: string, appMetaData: U): Promise<T> {
+    async inviteUserWithAppMetadata<T extends NetlifyIdentityUser<U>, U extends AppMetadata>(email: string, appMetaData: U): Promise<T> {
         var newUser = await this.userFunctions.inviteUser<T>(email);
         newUser.app_metadata = appMetaData;
 

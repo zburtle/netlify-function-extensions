@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zburtle/gotrue-node.git"
+    "url": "git+https://github.com/zburtle/netlify-function-extensions.git"
   },
   "author": "Zach Burtle",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zburtle/gotrue-node/issues"
+    "url": "https://github.com/zburtle/netlify-function-extensions/issues"
   },
-  "homepage": "https://github.com/zburtle/gotrue-node#readme",
+  "homepage": "https://github.com/zburtle/netlify-function-extensions#readme",
   "devDependencies": {
     "@types/node": "^18.11.18"
   }

@@ -1,7 +1,7 @@
 import { AppMetadata } from "./app-metadata";
 import { UserMetadata } from "./user-metadata";
 
-export interface GoTrueNodeUser<T = AppMetadata, U = UserMetadata> {
+export interface NetlifyIdentityUser<T = AppMetadata, U = UserMetadata> {
     app_metadata: T;
     aud: string;
     audience: string;
