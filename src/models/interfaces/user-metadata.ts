@@ -1,3 +1,3 @@
-export class UserMetaData {
+export class UserMetadata {
     
 }

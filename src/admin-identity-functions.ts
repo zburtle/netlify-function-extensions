@@ -1,9 +1,9 @@
 import { Context } from "@netlify/functions/dist/function/context";
 import { Event } from "@netlify/functions/dist/function/event";
 import axios from "axios";
-import { AppMetaData } from "./models/interfaces/app-metadata";
+import { AppMetadata } from "./models/interfaces/app-metadata";
 import { GoTrueNodeUser } from "./models/interfaces/go-true-node-user";
-import { UserMetaData } from "./models/interfaces/user-metadata";
+import { UserMetadata } from "./models/interfaces/user-metadata";
 import { Users } from "./models/interfaces/users";
 import { UserIdentityFunctions } from "./user-identity-functions";
 
@@ -58,7 +58,7 @@ export class AdminIdentityFunctions {
         await axios.delete(deleteUserUrl, { headers: { Authorization: `Bearer ${this.token}` }});
     }
 
-    async registerUserWithMetadata<T extends GoTrueNodeUser<U, V>, U extends AppMetaData, V extends UserMetaData>(email: string, password: string, appMetaData: U, userMetaData: V): Promise<T> {
+    async registerUserWithMetadata<T extends GoTrueNodeUser<U, V>, U extends AppMetadata, V extends UserMetadata>(email: string, password: string, appMetaData: U, userMetaData: V): Promise<T> {
         var newUser = await this.userFunctions.registerUser<T>(email, password);
         newUser.app_metadata = appMetaData;
         newUser.user_metadata = userMetaData;
@@ -68,7 +68,7 @@ export class AdminIdentityFunctions {
         return newUser;
     }
 
-    async registerUserWithAppMetadata<T extends GoTrueNodeUser<U>, U extends AppMetaData>(email: string, password: string, appMetaData: U): Promise<T> {
+    async registerUserWithAppMetadata<T extends GoTrueNodeUser<U>, U extends AppMetadata>(email: string, password: string, appMetaData: U): Promise<T> {
         var newUser = await this.userFunctions.registerUser<T>(email, password);
         newUser.app_metadata = appMetaData;
 
@@ -77,7 +77,7 @@ export class AdminIdentityFunctions {
         return newUser;
     }
 
-    async inviteUserWithMetadata<T extends GoTrueNodeUser<U, V>, U extends AppMetaData, V extends UserMetaData>(email: string, appMetaData: U, userMetaData: V): Promise<T> {
+    async inviteUserWithMetadata<T extends GoTrueNodeUser<U, V>, U extends AppMetadata, V extends UserMetadata>(email: string, appMetaData: U, userMetaData: V): Promise<T> {
         var newUser = await this.userFunctions.inviteUser<T>(email);
         newUser.app_metadata = appMetaData;
         newUser.user_metadata = userMetaData;
@@ -87,7 +87,7 @@ export class AdminIdentityFunctions {
         return newUser;
     }
 
-    async inviteUserWithAppMetadata<T extends GoTrueNodeUser<U>, U extends AppMetaData>(email: string, appMetaData: U): Promise<T> {
+    async inviteUserWithAppMetadata<T extends GoTrueNodeUser<U>, U extends AppMetadata>(email: string, appMetaData: U): Promise<T> {
         var newUser = await this.userFunctions.inviteUser<T>(email);
         newUser.app_metadata = appMetaData;
 

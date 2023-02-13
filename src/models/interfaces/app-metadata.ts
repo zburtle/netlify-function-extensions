@@ -1,4 +1,4 @@
-export class AppMetaData {
+export class AppMetadata {
     provider!: string;
     roles!: string[];
 }

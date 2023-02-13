@@ -1,5 +1,5 @@
 {
-  "name": "netlify-node-helper",
+  "name": "netlify-function-extensions",
   "version": "3.14.4",
   "description": "API to interact with Netlify Functions API",
   "main": "lib/index.js",
