@@ -12,15 +12,11 @@ export class NetlifyResult<T> {
         }
     }
 
-    static Ok<T>(result: T): NetlifyResult<T> {
-        return new NetlifyResult<T>(StatusCodes.OK, result);
+    static get Ok(): NetlifyResult<void> {
+        return new NetlifyResult(StatusCodes.OK);
     }
 
-    static OkResult(): NetlifyResult<void> {
-        return new NetlifyResult<void>(StatusCodes.OK);
-    }
-
-    static Error(): NetlifyResult<void> {
+    static get Error(): NetlifyResult<void> {
         return new NetlifyResult<void>(StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
