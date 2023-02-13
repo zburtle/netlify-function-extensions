@@ -68,7 +68,7 @@ export class NetlifyHelper {
         return await this.userIdentityFunctions.isUserInAnyRole(user, roleNames);
     }
 
-    async executeAsync<T>(action: string, functionToExecute: () => Promise<NetlifyResult<T>>, errorCallback: (error: any) => Promise<NetlifyResult<T>>): Promise<NetlifyResult<T> | NetlifyResult<void>> {
+    async executeAsync<T>(action: string, functionToExecute: () => Promise<NetlifyResult<T>>, errorCallback: (error: any) => Promise<NetlifyResult<T> | NetlifyResult<void>>): Promise<NetlifyResult<T> | NetlifyResult<void>> {
         try {
             if (action == this.event.httpMethod) {                
                 return await functionToExecute();
@@ -82,7 +82,7 @@ export class NetlifyHelper {
         }
     }
 
-    async executeAsyncWithRoleCheck<T>(action: string, roleNames: string[], functionToExecute: () => Promise<NetlifyResult<T>>, errorCallback: (error: any) => Promise<NetlifyResult<T>>): Promise<NetlifyResult<T> | NetlifyResult<void>> {
+    async executeAsyncWithRoleCheck<T>(action: string, roleNames: string[], functionToExecute: () => Promise<NetlifyResult<T>>, errorCallback: (error: any) => Promise<NetlifyResult<T> | NetlifyResult<void>>): Promise<NetlifyResult<T> | NetlifyResult<void>> {
         try {
             if (action == this.event.httpMethod) {
                 if (this.callingUser) {
