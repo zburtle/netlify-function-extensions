@@ -11,4 +11,16 @@ export class NetlifyResult<T> {
             this.body = JSON.stringify(result);
         }
     }
+
+    static Ok<T>(result: T): NetlifyResult<T> {
+        return new NetlifyResult<T>(StatusCodes.OK, result);
+    }
+
+    static OkResult(): NetlifyResult<void> {
+        return new NetlifyResult<void>(StatusCodes.OK);
+    }
+
+    static Error(): NetlifyResult<void> {
+        return new NetlifyResult<void>(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
 }
