@@ -1,4 +1,4 @@
-export class AppMetadata {
+export class NetlifyIdentityAppMetadata {
     provider!: string;
     roles!: string[];
 }

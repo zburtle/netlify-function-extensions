@@ -1,7 +1,7 @@
-import { AppMetadata } from "./app-metadata";
-import { UserMetadata } from "./user-metadata";
+import { NetlifyIdentityAppMetadata } from "./netlify-identity-app-metadata";
+import { NetlifyIdentityUserMetadata } from "./netlify-identity-user-metadata";
 
-export interface NetlifyIdentityUser<T = AppMetadata, U = UserMetadata> {
+export interface NetlifyIdentityUser<T = NetlifyIdentityAppMetadata, U = NetlifyIdentityUserMetadata> {
     app_metadata: T;
     aud: string;
     audience: string;
