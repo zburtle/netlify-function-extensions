@@ -10,7 +10,7 @@ export interface NetlifyIdentityUser<T = NetlifyIdentityAppMetadata, U = Netlify
     email: string;
     id: string;
     role: string;
-    sub: string;
+    sub?: string;
     token: Token;
     updated_at: string;
     url: string;
